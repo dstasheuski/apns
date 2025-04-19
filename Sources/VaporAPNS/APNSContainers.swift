@@ -38,12 +38,10 @@ public final class APNSContainers: Sendable {
 
     public func syncShutdown() {
         storage.withLockedValue {
-            do {
-                try $0.containers.values.forEach { container in
-                    try container.client.syncShutdown()
+            $0.containers.values.forEach { container in
+                Task {
+                    try! await container.client.shutdown()
                 }
-            } catch {
-                fatalError("Could not shutdown APNS Containers")
             }
         }
     }
