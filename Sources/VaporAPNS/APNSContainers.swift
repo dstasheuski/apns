@@ -40,7 +40,7 @@ public final class APNSContainers: Sendable {
         storage.withLockedValue {
             $0.containers.values.forEach { container in
                 Task {
-                    try! await container.client.shutdown()
+                    try! await container.client.shutdown { _ in }
                 }
             }
         }
